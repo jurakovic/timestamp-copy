@@ -22,6 +22,9 @@
 
   <PropertyGroup>
     <Version>3.0.0</Version>
+    <!-- Keeps ProductVersion a plain 3.0.0 instead of 3.0.0+<commit hash>, so build.ps1 can
+         name the release zip from it -->
+    <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
     <Product>Timestamp Copy</Product>
     <Company>jurakovic</Company>
     <Copyright>Copyright (c) jurakovic</Copyright>

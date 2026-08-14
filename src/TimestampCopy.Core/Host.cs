@@ -61,6 +61,25 @@ public static class Host
 				Ui.WriteLine(Constants.Version);
 				return ExitSuccess;
 			}
+
+			// Install and Uninstall do not pause on success, matching the script
+			if (args.Install)
+			{
+				ContextMenu.Install(ScriptMode.Standalone);
+				return ExitSuccess;
+			}
+
+			if (args.InstallBackgroundMode)
+			{
+				ContextMenu.Install(ScriptMode.Background);
+				return ExitSuccess;
+			}
+
+			if (args.Uninstall)
+			{
+				ContextMenu.Uninstall();
+				return ExitSuccess;
+			}
 		}
 
 		if (args.Copy is string copy)
@@ -78,6 +97,11 @@ public static class Host
 		if (args.Undo)
 			return Act(() => Actions.Undo(options), options, background);
 
+		// Nothing was asked for. On a console that means the install/uninstall menu; tscpw has
+		// no console to show it on.
+		if (!background)
+			return Menu.Show();
+
 		return NotSupported(args, options, background);
 	}
 
@@ -91,6 +115,10 @@ public static class Host
 		return ExitSuccess;
 	}
 
+	/// <summary>
+	/// Only reachable from tscpw: everything a console can do, a console does. tscpw exists to
+	/// run the five context menu actions without a window, and nothing else.
+	/// </summary>
 	private static int NotSupported(Args args, Options options, bool background)
 	{
 		string what = args switch
@@ -100,14 +128,11 @@ public static class Host
 			{ Uninstall: true } => "-Uninstall (-u)",
 			{ Help: true } => "-Help (-h)",
 			{ Version: true } => "-Version (-v)",
-			_ => "The interactive menu",
+			_ => "No action given.",
 		};
 
-		string message = background
-			? $"{what} is not available in background mode. Use tscp.exe."
-			: $"{what} is not implemented yet. Use TimestampCopy.ps1.";
-
-		return Report(message, options, background, ExitNotSupported);
+		return Report($"{what} is not available in background mode. Use tscp.exe.", options,
+			background, ExitNotSupported);
 	}
 
 	private static int Report(string message, Options options, bool background, int exitCode)

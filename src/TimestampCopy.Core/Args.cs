@@ -30,10 +30,6 @@ public sealed class Args
 
 	public Options Options => new(Quiet, SkipConfirm, Mode);
 
-	public bool HasAction =>
-		Copy is not null || Paste is not null || PasteDateCreated is not null
-		|| PasteDateModified is not null || Undo;
-
 	public static Args Parse(string[] argv, ScriptMode defaultMode = ScriptMode.Terminal)
 	{
 		Args args = new() { Mode = defaultMode };

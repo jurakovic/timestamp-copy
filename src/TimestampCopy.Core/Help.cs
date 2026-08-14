@@ -9,8 +9,8 @@ public static class Help
 		Ui.WriteLine("Parameters:");
 		Ui.WriteLine("  -Help (-h)                       Print help.");
 		Ui.WriteLine("  -Version (-v)                    Print the current version.");
-		Ui.WriteLine("  -Install (-i)                    Install the context menu entries in standalone mode.");
-		Ui.WriteLine("  -InstallBackgroundMode (-b)      Install the context menu entries in background mode (runs without a terminal window).");
+		Ui.WriteLine("  -Install (-i)                    Install the context menu entries in Standalone Mode.");
+		Ui.WriteLine("  -InstallBackgroundMode (-b)      Install the context menu entries in Background Mode (runs without a terminal window).");
 		Ui.WriteLine("  -Uninstall (-u)                  Uninstall the context menu entries and remove related data.");
 		Ui.WriteLine("  -Copy (-c) <path>                Copy timestamps of the specified file or folder to the clipboard.");
 		Ui.WriteLine("  -Paste (-p) <path>               Paste the copied timestamps to the specified file or folder.");

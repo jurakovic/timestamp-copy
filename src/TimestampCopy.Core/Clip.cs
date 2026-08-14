@@ -4,8 +4,8 @@ namespace TimestampCopy.Core;
 
 /// <summary>
 /// The on-disk timestamp clipboard: base64(utf8(...)) with LF-separated fields.
-/// Byte-compatible with <c>Set-Clipboard-Content</c> / <c>Get-Clipboard-Content</c> in
-/// TimestampCopy.ps1 so the script and the exe can be used interchangeably.
+/// Byte-compatible with <c>Set-Clipboard-Content</c> / <c>Get-Clipboard-Content</c> from the 2.x
+/// PowerShell releases, so upgrading keeps whatever was already copied.
 /// </summary>
 public static class Clip
 {

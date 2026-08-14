@@ -17,4 +17,11 @@ public static class Constants
 	public static string ClipPath { get; } = Path.Combine(AppDataPath, "clip");
 
 	public static string UndoPath { get; } = Path.Combine(AppDataPath, "clip-undo");
+
+	// The two executables always sit in the same folder - they share one copy of the runtime.
+	// The installer registers these paths, so it works from wherever the folder was unzipped.
+	public static string ExePath { get; } = Path.Combine(AppContext.BaseDirectory, "tscp.exe");
+
+	public static string ExePathBackground { get; } =
+		Path.Combine(AppContext.BaseDirectory, "tscpw.exe");
 }
