@@ -2,5 +2,6 @@
   <Folder Name="/src/">
     <Project Path="src/TimestampCopy.Core/TimestampCopy.Core.csproj" />
     <Project Path="src/tscp/tscp.csproj" />
+    <Project Path="src/tscpw/tscpw.csproj" />
   </Folder>
 </Solution>

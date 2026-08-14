@@ -16,6 +16,7 @@ if (-Not $OutputPath) {
 # and fails with "The application to execute does not exist: tscp.dll".
 $projects = @(
     "$PSScriptRoot\src\tscp\tscp.csproj"
+    "$PSScriptRoot\src\tscpw\tscpw.csproj"
 )
 
 if (Test-Path -Path "$OutputPath") {

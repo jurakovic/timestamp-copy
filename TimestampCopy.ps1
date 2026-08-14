@@ -21,6 +21,7 @@ $homepage = "https://github.com/jurakovic/timestamp-copy"
 $versionn = "2.1.0"
 $scriptPath = "$PSCommandPath"
 $exePath = "$PSScriptRoot\tscp.exe"
+$exePathw = "$PSScriptRoot\tscpw.exe"
 $iconPath = "$PSScriptRoot\tscp.ico"
 $appdataPath = "$env:LOCALAPPDATA\TimestampCopy"
 $clipPath = "$appdataPath\clip"
@@ -252,16 +253,19 @@ function Add-MenuItem {
 
     $headless = if ($ScriptMode -ieq "Background") { "conhost.exe --headless " } else { "" }
 
-    # Temporary migration rule (see PLAN.md, step 1): actions already ported to tscp.exe use it
-    # when the exe sits next to the script. Background mode stays on PowerShell until tscpw.exe
-    # exists (step 4), because tscp.exe cannot show the message box guards.
+    # Temporary migration rule (see PLAN.md): actions already ported use the executables when
+    # they sit next to the script. Background mode uses tscpw.exe, which has no console at all,
+    # so it needs neither the headless conhost prefix nor -ScriptMode.
     # Note the quoting change: '%1' (PowerShell single quotes) becomes "%1".
-    $useExe = $ExeFlag -and ($ScriptMode -ine "Background") -and (Test-Path -Path "$exePath")
+    $background = $ScriptMode -ieq "Background"
+    $exe = if ($background) { $exePathw } else { $exePath }
+    $useExe = $ExeFlag -and (Test-Path -Path "$exe")
 
     $argument = if ($Action -match "%1") { " \""%1\""" } else { "" } # Undo takes no path
+    $mode = if ($background) { "" } else { " -m $ScriptMode" }
 
     $command = if ($useExe) {
-        "\""$exePath\"" -m $ScriptMode $ExeFlag$argument"
+        "\""$exe\""$mode $ExeFlag$argument"
     } else {
         "${headless}powershell -ExecutionPolicy ByPass -NoProfile -Command \""& '$scriptPath' -ScriptMode '$ScriptMode' -$Action\"""
     }

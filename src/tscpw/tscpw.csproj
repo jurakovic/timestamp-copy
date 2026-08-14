@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!-- Console-vs-GUI is a bit in the PE header fixed at link time, not a runtime choice.
+         A console-subsystem exe launched from Explorer has its console allocated before Main
+         runs, so no amount of window hiding prevents the flash. WinExe removes it structurally,
+         and with it the headless conhost.exe prefix the script needed. -->
+    <OutputType>WinExe</OutputType>
+    <AssemblyName>tscpw</AssemblyName>
+    <RootNamespace>TimestampCopy.Cli</RootNamespace>
+    <ApplicationIcon>..\..\tscp.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TimestampCopy.Core\TimestampCopy.Core.csproj" />
+  </ItemGroup>
+
+</Project>
