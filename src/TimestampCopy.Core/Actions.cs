@@ -43,6 +43,23 @@ public static class Actions
 		Apply(path, dcOld, dcOld, dmOld, clip[1], options);
 	}
 
+	/// <summary>
+	/// Restores the timestamps backed up by the last applied paste. The path comes from the undo
+	/// clipboard rather than the command line, so it is checked here - the script leaves that to
+	/// <c>Get-Item</c> and fails less clearly when the file has since been moved or deleted.
+	/// </summary>
+	public static void Undo(Options options)
+	{
+		string[] undo = Clip.ReadUndo();
+		string path = undo[0];
+
+		Fs.GuardPathExists(path);
+
+		FileSystemInfo item = Fs.GetInfo(path);
+		Apply(path, Fs.Format(item.CreationTime), undo[1], Fs.Format(item.LastWriteTime), undo[2],
+			options);
+	}
+
 	private static (string DateCreated, string DateModified, string[] Clip) Prepare(string path)
 	{
 		Fs.GuardPathExists(path);

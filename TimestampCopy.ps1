@@ -226,7 +226,7 @@ function Add-ContextMenu {
     Add-MenuItem -Key "$RootKey\shell\020-Paste" -Label "Paste" -Action "Paste '%1'" -ScriptMode "$ScriptMode" -ExeFlag "-p"
     Add-MenuItem -Key "$RootKey\shell\030-PasteDateCreated" -Label "Paste \""Date Created\""" -Action "PasteDateCreated '%1'" -ScriptMode "$ScriptMode" -ExeFlag "-pc"
     Add-MenuItem -Key "$RootKey\shell\040-PasteDateModified" -Label "Paste \""Date Modified\""" -Action "PasteDateModified '%1'" -ScriptMode "$ScriptMode" -ExeFlag "-pm"
-    Add-MenuItem -Key "$RootKey\shell\050-Undo" -Label "Undo" -Action "Undo" -ScriptMode "$ScriptMode"
+    Add-MenuItem -Key "$RootKey\shell\050-Undo" -Label "Undo" -Action "Undo" -ScriptMode "$ScriptMode" -ExeFlag "-z"
 }
 
 function Add-MenuRoot {
@@ -258,8 +258,10 @@ function Add-MenuItem {
     # Note the quoting change: '%1' (PowerShell single quotes) becomes "%1".
     $useExe = $ExeFlag -and ($ScriptMode -ine "Background") -and (Test-Path -Path "$exePath")
 
+    $argument = if ($Action -match "%1") { " \""%1\""" } else { "" } # Undo takes no path
+
     $command = if ($useExe) {
-        "\""$exePath\"" -m $ScriptMode $ExeFlag \""%1\"""
+        "\""$exePath\"" -m $ScriptMode $ExeFlag$argument"
     } else {
         "${headless}powershell -ExecutionPolicy ByPass -NoProfile -Command \""& '$scriptPath' -ScriptMode '$ScriptMode' -$Action\"""
     }

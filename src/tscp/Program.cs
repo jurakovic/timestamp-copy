@@ -61,7 +61,10 @@ internal static class Program
 		if (args.PasteDateModified is string pasteDateModified)
 			return Run(args, () => Actions.PasteDateModified(pasteDateModified, args.Options));
 
-		// Undo and install/uninstall are still handled by TimestampCopy.ps1.
+		if (args.Undo)
+			return Run(args, () => Actions.Undo(args.Options));
+
+		// Install/uninstall and the menu are still handled by TimestampCopy.ps1.
 		return NotImplemented(args);
 	}
 
@@ -79,7 +82,6 @@ internal static class Program
 			{ Install: true } => "-Install (-i)",
 			{ InstallBackgroundMode: true } => "-InstallBackgroundMode (-b)",
 			{ Uninstall: true } => "-Uninstall (-u)",
-			{ Undo: true } => "-Undo (-z)",
 			_ => "the interactive menu",
 		};
 

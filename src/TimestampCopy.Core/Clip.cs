@@ -48,6 +48,18 @@ public static class Clip
 		return ReadGuarded(Constants.ClipPath, expectedCount: 2, firstTimestamp: 0, empty, corrupted);
 	}
 
+	/// <summary>
+	/// Reads the backed-up path and its two timestamps, guarded the same way
+	/// <c>Guard-Undo-Clipboard</c> does. Field 0 is the path, so only fields 1 and 2 are parsed.
+	/// </summary>
+	public static string[] ReadUndo()
+	{
+		const string empty = "Timestamps undo clipboard empty. Paste some timestamps.   ";
+		const string corrupted = "Timestamps undo clipboard corrupted. Paste new timestamps.";
+
+		return ReadGuarded(Constants.UndoPath, expectedCount: 3, firstTimestamp: 1, empty, corrupted);
+	}
+
 	private static string[] ReadGuarded(string path, int expectedCount, int firstTimestamp,
 		string emptyMessage, string corruptedMessage)
 	{
