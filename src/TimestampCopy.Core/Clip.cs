@@ -28,4 +28,51 @@ public static class Clip
 		string decoded = Encoding.UTF8.GetString(Convert.FromBase64String(encoded));
 		return decoded.Split('\n');
 	}
+
+	public static void WriteTimestamps(string dateCreated, string dateModified) =>
+		Write(Constants.ClipPath, $"{dateCreated}\n{dateModified}");
+
+	public static void WriteUndo(string path, string dateCreated, string dateModified) =>
+		Write(Constants.UndoPath, $"{path}\n{dateCreated}\n{dateModified}");
+
+	/// <summary>
+	/// Reads the two copied timestamps, rejecting a missing or unusable clipboard the same way
+	/// <c>Guard-Clipboard</c> does. The trailing spaces in the "empty" message are the script's,
+	/// kept so the Background-mode message box stays the same width.
+	/// </summary>
+	public static string[] ReadTimestamps()
+	{
+		const string empty = "Timestamps clipboard empty. Copy new timestamps.    ";
+		const string corrupted = "Timestamps clipboard corrupted. Copy new timestamps.";
+
+		return ReadGuarded(Constants.ClipPath, expectedCount: 2, firstTimestamp: 0, empty, corrupted);
+	}
+
+	private static string[] ReadGuarded(string path, int expectedCount, int firstTimestamp,
+		string emptyMessage, string corruptedMessage)
+	{
+		if (!File.Exists(path))
+			throw new GuardException(emptyMessage);
+
+		string[] values;
+		try
+		{
+			values = Read(path);
+		}
+		catch (FormatException)
+		{
+			throw new GuardException(corruptedMessage);
+		}
+
+		if (values.Length != expectedCount)
+			throw new GuardException(corruptedMessage);
+
+		for (int i = firstTimestamp; i < values.Length; i++)
+		{
+			if (!Fs.TryParse(values[i], out _))
+				throw new GuardException(corruptedMessage);
+		}
+
+		return values;
+	}
 }

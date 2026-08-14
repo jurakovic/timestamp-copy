@@ -49,16 +49,27 @@ internal static class Program
 			return ExitSuccess;
 		}
 
-		if (args.Copy is not null)
-		{
-			Actions.Copy(args.Copy, args.Quiet);
-			Ui.Pause(args.Mode);
-			return ExitSuccess;
-		}
+		if (args.Copy is string copy)
+			return Run(args, () => Actions.Copy(copy, args.Options));
 
-		// Step 1 ships -c only; the remaining actions are still handled by TimestampCopy.ps1.
-		// See PLAN.md "Steps".
+		if (args.Paste is string paste)
+			return Run(args, () => Actions.Paste(paste, args.Options));
+
+		if (args.PasteDateCreated is string pasteDateCreated)
+			return Run(args, () => Actions.PasteDateCreated(pasteDateCreated, args.Options));
+
+		if (args.PasteDateModified is string pasteDateModified)
+			return Run(args, () => Actions.PasteDateModified(pasteDateModified, args.Options));
+
+		// Undo and install/uninstall are still handled by TimestampCopy.ps1.
 		return NotImplemented(args);
+	}
+
+	private static int Run(Args args, Action action)
+	{
+		action();
+		Ui.Pause(args.Mode);
+		return ExitSuccess;
 	}
 
 	private static int NotImplemented(Args args)
@@ -68,9 +79,6 @@ internal static class Program
 			{ Install: true } => "-Install (-i)",
 			{ InstallBackgroundMode: true } => "-InstallBackgroundMode (-b)",
 			{ Uninstall: true } => "-Uninstall (-u)",
-			{ Paste: not null } => "-Paste (-p)",
-			{ PasteDateCreated: not null } => "-PasteDateCreated (-pc)",
-			{ PasteDateModified: not null } => "-PasteDateModified (-pm)",
 			{ Undo: true } => "-Undo (-z)",
 			_ => "the interactive menu",
 		};

@@ -28,6 +28,8 @@ public sealed class Args
 	/// </summary>
 	public string? Error { get; private set; }
 
+	public Options Options => new(Quiet, SkipConfirm, Mode);
+
 	public bool HasAction =>
 		Copy is not null || Paste is not null || PasteDateCreated is not null
 		|| PasteDateModified is not null || Undo;

@@ -223,9 +223,9 @@ function Add-ContextMenu {
 
     Add-MenuRoot -Key "$RootKey" -Label "Timestamp Copy" -IconPath "$iconPath"
     Add-MenuItem -Key "$RootKey\shell\010-Copy" -Label "Copy" -Action "Copy '%1'" -ScriptMode "$ScriptMode" -ExeFlag "-c"
-    Add-MenuItem -Key "$RootKey\shell\020-Paste" -Label "Paste" -Action "Paste '%1'" -ScriptMode "$ScriptMode"
-    Add-MenuItem -Key "$RootKey\shell\030-PasteDateCreated" -Label "Paste \""Date Created\""" -Action "PasteDateCreated '%1'" -ScriptMode "$ScriptMode"
-    Add-MenuItem -Key "$RootKey\shell\040-PasteDateModified" -Label "Paste \""Date Modified\""" -Action "PasteDateModified '%1'" -ScriptMode "$ScriptMode"
+    Add-MenuItem -Key "$RootKey\shell\020-Paste" -Label "Paste" -Action "Paste '%1'" -ScriptMode "$ScriptMode" -ExeFlag "-p"
+    Add-MenuItem -Key "$RootKey\shell\030-PasteDateCreated" -Label "Paste \""Date Created\""" -Action "PasteDateCreated '%1'" -ScriptMode "$ScriptMode" -ExeFlag "-pc"
+    Add-MenuItem -Key "$RootKey\shell\040-PasteDateModified" -Label "Paste \""Date Modified\""" -Action "PasteDateModified '%1'" -ScriptMode "$ScriptMode" -ExeFlag "-pm"
     Add-MenuItem -Key "$RootKey\shell\050-Undo" -Label "Undo" -Action "Undo" -ScriptMode "$ScriptMode"
 }
 

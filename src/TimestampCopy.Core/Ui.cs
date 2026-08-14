@@ -32,6 +32,22 @@ public static class Ui
 		Console.WriteLine();
 	}
 
+	/// <summary>
+	/// The <c>Read-Host "Apply changes? (y/N)"</c> prompt. Only an exact "y" (any case) applies,
+	/// matching the script; anything else, including EOF, cancels.
+	/// </summary>
+	public static bool Confirm()
+	{
+		Write("Apply changes? (y/N): ");
+
+		// Windows PowerShell 5.1 prefixes a UTF-8 BOM when it pipes into a native command,
+		// which would otherwise turn a scripted "y" into a silent cancel. Nothing else is
+		// trimmed: as in the script, anything but a bare "y" cancels.
+		string? answer = Console.ReadLine()?.TrimStart('\uFEFF');
+
+		return string.Equals(answer, "y", StringComparison.OrdinalIgnoreCase);
+	}
+
 	public static void Pause(ScriptMode mode, string option = "exit")
 	{
 		// There is nothing to keep open when the caller redirected stdin (a pipe, a test run),
