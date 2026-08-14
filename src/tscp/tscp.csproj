@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>tscp</AssemblyName>
+    <RootNamespace>TimestampCopy.Cli</RootNamespace>
+    <ApplicationIcon>..\..\tscp.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TimestampCopy.Core\TimestampCopy.Core.csproj" />
+  </ItemGroup>
+
+</Project>

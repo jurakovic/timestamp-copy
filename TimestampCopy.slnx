@@ -1,0 +1,6 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/TimestampCopy.Core/TimestampCopy.Core.csproj" />
+    <Project Path="src/tscp/tscp.csproj" />
+  </Folder>
+</Solution>

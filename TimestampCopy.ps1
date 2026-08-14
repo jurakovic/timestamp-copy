@@ -20,6 +20,7 @@ Param(
 $homepage = "https://github.com/jurakovic/timestamp-copy"
 $versionn = "2.1.0"
 $scriptPath = "$PSCommandPath"
+$exePath = "$PSScriptRoot\tscp.exe"
 $iconPath = "$PSScriptRoot\tscp.ico"
 $appdataPath = "$env:LOCALAPPDATA\TimestampCopy"
 $clipPath = "$appdataPath\clip"
@@ -221,7 +222,7 @@ function Add-ContextMenu {
     )
 
     Add-MenuRoot -Key "$RootKey" -Label "Timestamp Copy" -IconPath "$iconPath"
-    Add-MenuItem -Key "$RootKey\shell\010-Copy" -Label "Copy" -Action "Copy '%1'" -ScriptMode "$ScriptMode"
+    Add-MenuItem -Key "$RootKey\shell\010-Copy" -Label "Copy" -Action "Copy '%1'" -ScriptMode "$ScriptMode" -ExeFlag "-c"
     Add-MenuItem -Key "$RootKey\shell\020-Paste" -Label "Paste" -Action "Paste '%1'" -ScriptMode "$ScriptMode"
     Add-MenuItem -Key "$RootKey\shell\030-PasteDateCreated" -Label "Paste \""Date Created\""" -Action "PasteDateCreated '%1'" -ScriptMode "$ScriptMode"
     Add-MenuItem -Key "$RootKey\shell\040-PasteDateModified" -Label "Paste \""Date Modified\""" -Action "PasteDateModified '%1'" -ScriptMode "$ScriptMode"
@@ -245,13 +246,26 @@ function Add-MenuItem {
         [string]$Key,
         [string]$Label,
         [string]$Action,
-        [string]$ScriptMode
+        [string]$ScriptMode,
+        [string]$ExeFlag
     )
 
     $headless = if ($ScriptMode -ieq "Background") { "conhost.exe --headless " } else { "" }
 
+    # Temporary migration rule (see PLAN.md, step 1): actions already ported to tscp.exe use it
+    # when the exe sits next to the script. Background mode stays on PowerShell until tscpw.exe
+    # exists (step 4), because tscp.exe cannot show the message box guards.
+    # Note the quoting change: '%1' (PowerShell single quotes) becomes "%1".
+    $useExe = $ExeFlag -and ($ScriptMode -ine "Background") -and (Test-Path -Path "$exePath")
+
+    $command = if ($useExe) {
+        "\""$exePath\"" -m $ScriptMode $ExeFlag \""%1\"""
+    } else {
+        "${headless}powershell -ExecutionPolicy ByPass -NoProfile -Command \""& '$scriptPath' -ScriptMode '$ScriptMode' -$Action\"""
+    }
+
     reg.exe add "$Key" /ve /d "$Label" /f | Out-Null
-    reg.exe add "$Key\command" /ve /d "${headless}powershell -ExecutionPolicy ByPass -NoProfile -Command \""& '$scriptPath' -ScriptMode '$ScriptMode' -$Action\""" /f | Out-Null
+    reg.exe add "$Key\command" /ve /d "$command" /f | Out-Null
 }
 
 function Uninstall {
