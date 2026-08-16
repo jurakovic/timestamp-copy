@@ -4,4 +4,10 @@
     <RootNamespace>TimestampCopy.Core</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <!-- Lets the tests reach the registry command builder and the clipboard readers without
+         going through the real HKEY_CLASSES_ROOT or the real %LOCALAPPDATA%. -->
+    <InternalsVisibleTo Include="TimestampCopy.Tests" />
+  </ItemGroup>
+
 </Project>

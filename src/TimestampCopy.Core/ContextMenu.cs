@@ -9,14 +9,14 @@ namespace TimestampCopy.Core;
 /// </summary>
 public static class ContextMenu
 {
-	private static readonly string[] RootKeys =
+	internal static readonly string[] RootKeys =
 	[
 		@"*\shell\TimestampCopy",
 		@"Directory\shell\TimestampCopy",
 		@"lnkfile\shell\TimestampCopy",
 	];
 
-	private static readonly (string Key, string Label, string Flag, bool Path)[] Items =
+	internal static readonly (string Key, string Label, string Flag, bool Path)[] Items =
 	[
 		(@"shell\010-Copy", "Copy", "-c", true),
 		(@"shell\020-Paste", "Paste", "-p", true),
@@ -75,7 +75,13 @@ public static class ContextMenu
 		}
 	}
 
-	private static string Command(ScriptMode mode, string flag, bool path)
+	/// <summary>
+	/// The exact string written to the <c>command</c> key. Internal rather than private so the
+	/// tests can pin it without writing to the real registry - these strings have to keep matching
+	/// what the 2.x PowerShell installer produced, and a wrong quote here is a menu item that
+	/// silently does nothing when clicked.
+	/// </summary>
+	internal static string Command(ScriptMode mode, string flag, bool path)
 	{
 		// Background mode runs tscpw.exe, which has no console and therefore needs neither a
 		// headless conhost prefix nor -ScriptMode. Undo is the one item that takes no path.

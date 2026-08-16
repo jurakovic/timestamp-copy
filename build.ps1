@@ -3,7 +3,8 @@ Param(
     [string]$Runtime = "win-x64",
     [string]$Configuration = "Release",
     [string]$OutputPath,
-    [switch]$Zip
+    [switch]$Zip,
+    [switch]$SkipTests
 )
 
 $ErrorActionPreference = "Stop"
@@ -22,6 +23,13 @@ $projects = @(
     "$PSScriptRoot\src\tscp\tscp.csproj"
     "$PSScriptRoot\src\tscpw\tscpw.csproj"
 )
+
+if (-Not $SkipTests) {
+    Write-Host "Running tests..."
+    dotnet test "$PSScriptRoot\tests\TimestampCopy.Tests\TimestampCopy.Tests.csproj" -c "$Configuration"
+    if ($LASTEXITCODE -ne 0) { throw "Tests failed" }
+    Write-Host ""
+}
 
 if (Test-Path -Path "$OutputPath") {
     Remove-Item -Recurse -Force -Path "$OutputPath"

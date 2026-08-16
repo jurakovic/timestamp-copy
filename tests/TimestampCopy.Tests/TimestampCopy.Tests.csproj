@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Deliberately outside src/, so src/Directory.Build.props does not apply. A test project
+       has no use for RuntimeIdentifier, IsAotCompatible or InvariantGlobalization. It builds
+       fine with them, but it never publishes, so they only add noise. See PLAN.md step 6. -->
+
+  <PropertyGroup>
+    <!-- Must match TimestampCopy.Core: a net10.0 project cannot reference net10.0-windows -->
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageReference Include="xunit" Version="2.9.3" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="3.1.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\TimestampCopy.Core\TimestampCopy.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+    <Using Include="TimestampCopy.Core" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,54 @@
+{
+  "//": "workingDirectory is relative to the project directory, so this puts every profile at the repository root and lets the arguments below be plain relative paths.",
+  "profiles": {
+    "menu (no arguments)": {
+      "commandName": "Project",
+      "workingDirectory": "..\\..\\"
+    },
+    "version": {
+      "commandName": "Project",
+      "commandLineArgs": "-v",
+      "workingDirectory": "..\\..\\"
+    },
+    "help": {
+      "commandName": "Project",
+      "commandLineArgs": "-h",
+      "workingDirectory": "..\\..\\"
+    },
+    "copy (file)": {
+      "commandName": "Project",
+      "commandLineArgs": "-c \"scratch\\sample.txt\"",
+      "workingDirectory": "..\\..\\"
+    },
+    "copy (folder)": {
+      "commandName": "Project",
+      "commandLineArgs": "-c \"scratch\"",
+      "workingDirectory": "..\\..\\"
+    },
+    "paste": {
+      "commandName": "Project",
+      "commandLineArgs": "-p \"scratch\\sample.txt\"",
+      "workingDirectory": "..\\..\\"
+    },
+    "paste date created": {
+      "commandName": "Project",
+      "commandLineArgs": "-pc \"scratch\\sample.txt\"",
+      "workingDirectory": "..\\..\\"
+    },
+    "paste date modified": {
+      "commandName": "Project",
+      "commandLineArgs": "-pm \"scratch\\sample.txt\"",
+      "workingDirectory": "..\\..\\"
+    },
+    "undo": {
+      "commandName": "Project",
+      "commandLineArgs": "-z",
+      "workingDirectory": "..\\..\\"
+    },
+    "copy as Explorer runs it (Standalone)": {
+      "commandName": "Project",
+      "commandLineArgs": "-m Standalone -c \"scratch\\sample.txt\"",
+      "workingDirectory": "..\\..\\"
+    }
+  }
+}

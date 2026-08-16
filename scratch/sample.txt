@@ -1,0 +1,4 @@
+A throwaway target for the F5 launch profiles in src/tscp/Properties/launchSettings.json.
+
+Copy or paste timestamps onto this file (or onto the scratch folder itself) while debugging.
+Git tracks content, not timestamps, so retiming this file never shows up as a change.

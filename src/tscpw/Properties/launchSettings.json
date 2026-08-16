@@ -1,0 +1,30 @@
+{
+  "//": "tscpw has no console: success is silent and every failure is a message box. Breakpoints are the only way to watch it work. Background mode never prompts, so the paste profiles apply immediately.",
+  "profiles": {
+    "copy (file)": {
+      "commandName": "Project",
+      "commandLineArgs": "-c \"scratch\\sample.txt\"",
+      "workingDirectory": "..\\..\\"
+    },
+    "paste (applies without asking)": {
+      "commandName": "Project",
+      "commandLineArgs": "-p \"scratch\\sample.txt\"",
+      "workingDirectory": "..\\..\\"
+    },
+    "undo": {
+      "commandName": "Project",
+      "commandLineArgs": "-z",
+      "workingDirectory": "..\\..\\"
+    },
+    "guard: missing path (message box)": {
+      "commandName": "Project",
+      "commandLineArgs": "-c \"scratch\\does-not-exist.txt\"",
+      "workingDirectory": "..\\..\\"
+    },
+    "guard: unsupported action (message box, exit 2)": {
+      "commandName": "Project",
+      "commandLineArgs": "-i",
+      "workingDirectory": "..\\..\\"
+    }
+  }
+}

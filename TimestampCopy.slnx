@@ -4,4 +4,7 @@
     <Project Path="src/tscp/tscp.csproj" />
     <Project Path="src/tscpw/tscpw.csproj" />
   </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/TimestampCopy.Tests/TimestampCopy.Tests.csproj" />
+  </Folder>
 </Solution>
